@@ -1,0 +1,92 @@
+[
+  {
+    "surname": "Murphy",
+    "normalized": "murphy",
+    "confidenceScore": 94,
+    "primaryCounties": ["Cork", "Wexford", "Dublin", "Kerry"],
+    "totalCivilRecords": "142,500+",
+    "griffithsValuationMatch": "High Density (1847–1864)",
+    "historicalOverview": "The most common surname in Ireland, derived from the Gaelic 'Ó Murchadha', meaning descendant of Murchadh (sea-warrior)."
+  },
+  {
+    "surname": "Kelly",
+    "normalized": "kelly",
+    "confidenceScore": 91,
+    "primaryCounties": ["Galway", "Roscommon", "Cork", "Clare"],
+    "totalCivilRecords": "128,000+",
+    "griffithsValuationMatch": "High Density (1847–1864)",
+    "historicalOverview": "Originates from multiple ancient clans, most notably in Galway and Roscommon, from the Gaelic 'Ó Ceallaigh'."
+  },
+  {
+    "surname": "O'Brien",
+    "normalized": "obrien",
+    "confidenceScore": 89,
+    "primaryCounties": ["Clare", "Limerick", "Tipperary", "Waterford"],
+    "totalCivilRecords": "112,000+",
+    "griffithsValuationMatch": "High Density (1847–1864)",
+    "historicalOverview": "Descendants of Brian Boru, the celebrated High King of Ireland, historically prominent across Munster."
+  },
+  {
+    "surname": "Walsh",
+    "normalized": "walsh",
+    "confidenceScore": 88,
+    "primaryCounties": ["Mayo", "Kilkenny", "Dublin", "Waterford"],
+    "totalCivilRecords": "109,000+",
+    "griffithsValuationMatch": "High Density (1847–1864)",
+    "historicalOverview": "A Norman-associated name meaning 'Welshman', brought over by families arriving during the 12th-century invasion."
+  },
+  {
+    "surname": "Byrne",
+    "normalized": "byrne",
+    "confidenceScore": 87,
+    "primaryCounties": ["Wicklow", "Dublin", "Kildare"],
+    "totalCivilRecords": "98,000+",
+    "griffithsValuationMatch": "Medium-High Density (1847–1864)",
+    "historicalOverview": "Originates from 'Ó Broin', descendants of the Kings of Leinster who famously resisted Norman expansion in the Wicklow mountains."
+  },
+  {
+    "surname": "Ryan",
+    "normalized": "ryan",
+    "confidenceScore": 86,
+    "primaryCounties": ["Tipperary", "Limerick", "Dublin"],
+    "totalCivilRecords": "95,000+",
+    "griffithsValuationMatch": "High Density (1847–1864)",
+    "historicalOverview": "Derived from the Gaelic 'Ó Riain', historically concentrated heavily across County Tipperary."
+  },
+  {
+    "surname": "O'Connor",
+    "normalized": "oconnor",
+    "confidenceScore": 85,
+    "primaryCounties": ["Roscommon", "Kerry", "Clare", "Cork"],
+    "totalCivilRecords": "91,000+",
+    "griffithsValuationMatch": "High Density (1847–1864)",
+    "historicalOverview": "One of the royal dynasties of Connacht, originating from the Gaelic 'Ó Conchobhair'."
+  },
+  {
+    "surname": "Sullivan",
+    "normalized": "sullivan",
+    "confidenceScore": 84,
+    "primaryCounties": ["Cork", "Kerry"],
+    "totalCivilRecords": "89,000+",
+    "griffithsValuationMatch": "High Density (1847–1864)",
+    "historicalOverview": "A powerful Munster clan historically centered in the southwest of Ireland, derived from 'Ó Súilleabháin'."
+  },
+  {
+    "surname": "Doyle",
+    "normalized": "doyle",
+    "confidenceScore": 82,
+    "primaryCounties": ["Wexford", "Dublin", "Carlow"],
+    "totalCivilRecords": "76,000+",
+    "griffithsValuationMatch": "Medium Density (1847–1864)",
+    "historicalOverview": "Derived from the Norse-Gaelic 'Ó Dubhghaill', meaning 'dark stranger', traditionally prevalent in southeast coastal counties."
+  },
+  {
+    "surname": "O'Neill",
+    "normalized": "oneill",
+    "confidenceScore": 80,
+    "primaryCounties": ["Tyrone", "Armagh", "Derry", "Antrim"],
+    "totalCivilRecords": "72,000+",
+    "griffithsValuationMatch": "Medium Density (1847–1864)",
+    "historicalOverview": "The legendary royal house of Ulster, tracing descent from Niall of the Nine Hostages."
+  }
+]

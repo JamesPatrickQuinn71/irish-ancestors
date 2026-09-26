@@ -1,69 +1,149 @@
-import Image from "next/image";
+'use client';
+
+import { useState } from 'react';
+import { supabase } from '../lib/supabase';
+import surnamesData from '../data/surnames.json';
 
 export default function Home() {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedSurname, setSelectedSurname] = useState<any | null>(null);
+  const [email, setEmail] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+
+  const filteredSurnames = searchTerm.trim() === '' 
+    ? [] 
+    : surnamesData.filter(item => 
+        item.surname.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+
+  const handleSelect = (item: any) => {
+    setSelectedSurname(item);
+    setSearchTerm(item.surname);
+  };
+
+  const handleLeadSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email && selectedSurname) {
+      const { data, error } = await supabase
+        .from('leads')
+        .insert([
+          { email: email, surname: selectedSurname.surname }
+        ]);
+
+      if (error) {
+        console.error('Error saving lead:', error.message);
+      } else {
+        setSubmitted(true);
+      }
+    }
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main className="min-h-screen bg-slate-900 text-slate-100 flex flex-col items-center px-4 py-16">
+      <div className="max-w-xl w-full space-y-8">
+        
+        {/* Header */}
+        <div className="text-center space-y-2">
+          <h1 className="text-3xl font-bold tracking-tight text-white">Irish Ancestry Surname Matcher</h1>
+          <p className="text-slate-400 text-sm">
+            Check surviving parish register density and match confidence scores instantly.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        {/* Search Input Box */}
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Enter an Irish surname (e.g., Murphy, Kelly)..."
+            value={searchTerm}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              setSelectedSurname(null);
+              setSubmitted(false);
+            }}
+            className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          />
+
+          {/* Autocomplete dropdown */}
+          {filteredSurnames.length > 0 && !selectedSurname && (
+            <ul className="absolute z-10 w-full mt-1 bg-slate-800 border border-slate-700 rounded-lg shadow-lg overflow-hidden">
+              {filteredSurnames.map((item) => (
+                <li
+                  key={item.normalized}
+                  onClick={() => handleSelect(item)}
+                  className="px-4 py-3 hover:bg-slate-700 cursor-pointer flex justify-between items-center text-sm"
+                >
+                  <span className="font-semibold text-white">{item.surname}</span>
+                  <span className="text-emerald-400 font-medium">{item.confidenceScore}% Match</span>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
-      </main>
-    </div>
+
+        {/* Results View */}
+        {selectedSurname && (
+          <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 space-y-6 shadow-xl">
+            
+            {/* Top Score Summary */}
+            <div className="flex justify-between items-center border-b border-slate-700 pb-4">
+              <div>
+                <h2 className="text-2xl font-bold text-white">{selectedSurname.surname}</h2>
+                <p className="text-xs text-slate-400 mt-1">{selectedSurname.historicalOverview}</p>
+              </div>
+              <div className="text-right">
+                <span className="text-3xl font-extrabold text-emerald-400">{selectedSurname.confidenceScore}%</span>
+                <p className="text-[10px] uppercase tracking-wider text-slate-400">Confidence Score</p>
+              </div>
+            </div>
+
+            {/* County Hotspots */}
+            <div className="space-y-2">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400">Primary County Concentrations</h3>
+              <div className="flex flex-wrap gap-2">
+                {selectedSurname.primaryCounties.map((county: string) => (
+                  <span key={county} className="px-3 py-1 bg-slate-700 text-slate-200 rounded-md text-xs font-medium">
+                    {county}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Gated Deep Report Section */}
+            <div className="bg-slate-900/60 border border-slate-700/60 rounded-lg p-5 space-y-4">
+              <h3 className="text-sm font-semibold text-white">Unlock Full Parish Archive & Valuation Breakdown</h3>
+              <p className="text-xs text-slate-400">
+                Get the complete primary source checklist, surviving records count ({selectedSurname.totalCivilRecords}), and distribution maps sent directly to your inbox.
+              </p>
+
+              {!submitted ? (
+                <form onSubmit={handleLeadSubmit} className="flex gap-2">
+                  <input
+                    type="email"
+                    required
+                    placeholder="Enter your email address..."
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="flex-1 px-3 py-2 bg-slate-800 border border-slate-700 rounded-md text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  />
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-sm rounded-md transition-colors"
+                  >
+                    Unlock Report
+                  </button>
+                </form>
+              ) : (
+                <div className="p-3 bg-emerald-950/50 border border-emerald-800/50 text-emerald-300 text-xs rounded-md text-center font-medium">
+                  Success! Check your inbox for the complete historical breakdown.
+                </div>
+              )}
+            </div>
+
+          </div>
+        )}
+
+      </div>
+    </main>
   );
 }
